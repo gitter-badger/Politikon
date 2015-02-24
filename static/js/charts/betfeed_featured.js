@@ -51,7 +51,7 @@
         window.myLine = new Chart(betchart8).Line(lineChartData, {responsive: true,showScale: false,scaleShowLabels: false,datasetStrokeWidth : 6,bezierCurveTension : 0.5,pointDotRadius : 6,pointHitDetectionRadius : 10});
         var betchart9 = document.getElementById("bet-canvas09").getContext("2d");
         window.myLine = new Chart(betchart9).Line(lineChartData, {responsive: true,showScale: false,scaleShowLabels: false,datasetStrokeWidth : 6,bezierCurveTension : 0.5,pointDotRadius : 6,pointHitDetectionRadius : 10});
-        
+
         var ctx = document.getElementById("featured-canvas").getContext("2d");
         window.myLine = new Chart(ctx).Line(featuredChartData, { responsive: true,showScale: false, scaleShowLabels: false, datasetStrokeWidth : 6, bezierCurveTension : 0.5, pointDotRadius : 6, pointHitDetectionRadius : 40});
 }

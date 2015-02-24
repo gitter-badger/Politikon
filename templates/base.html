@@ -40,7 +40,8 @@
 <script type="text/javascript" language="javascript" src="{% static 'js/jquery.dotdotdot.min.js' %}"></script>
 <script type="text/javascript" language="javascript" src="{% static 'js/Chart.min.js' %}"></script>
 <script type="text/javascript" language="javascript" src="{% static 'js/actions.js' %}"></script>
-<script type="text/javascript" language="javascript" src="{% static 'js/charts/betfeed_featured.js' %}"></script>
+
+{% block scripts %}{% endblock %}
 
 {% if request.user == None %}
 <!--skrypty dla goscia-->

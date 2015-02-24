@@ -1,3 +1,5 @@
+# coding: utf-8
+
 from coffin.shortcuts import render_to_response
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -15,6 +17,10 @@ logger = logging.getLogger(__name__)
 
 from .exceptions import *
 from .models import *
+from accounts.models import User
+
+from datetime import datetime
+import psycopg2
 
 from fandjango.decorators import facebook_authorization_required
 
@@ -56,6 +62,29 @@ def create_bets_dict(user, events):
 
     return all_bets
 
+def pretty_date(d):
+    diff = datetime.utcnow().replace(
+        tzinfo=psycopg2.tz.FixedOffsetTimezone(offset=0, name=None)) - d
+    s = diff.seconds
+    if diff.days > 7 or diff.days < 0:
+        return d.strftime('%d %b %y')
+    elif diff.days == 1:
+        return 'wczoraj'
+    elif diff.days > 1:
+        return '{} dni temu'.format(diff.days)
+    elif s <= 1:
+        return 'teraz'
+    elif s < 60:
+        return '{} sekund temu'.format(s)
+    elif s < 120:
+        return u'minutę temu'
+    elif s < 3600:
+        return '{} minut temu'.format(s/60)
+    elif s < 7200:
+        return u'godzinę temu'
+    else:
+        return '{}h temu'.format(s/3600)
+
 def index(request):
     ctx = {
         'front_event' : Event.objects.get_front_event(),
@@ -76,18 +105,6 @@ def events(request, mode):
     ctx['bets'] = create_bets_dict(request.user, ctx['events'])
 
     return render_to_response('events/events.html', ctx, RequestContext(request))
-
-def event_facebook_object_detail(request, event_id):
-    try:
-        event = Event.objects.get(id=event_id)
-    except Event.DoesNotExist:
-        raise Http404
-
-    ctx = {
-        'event': event,
-    }
-
-    return render_to_response('fb_objects/events/event_detail.html', ctx, RequestContext(request))
 
 def event_detail(request, event_id):
     try:
@@ -112,6 +129,40 @@ def event_detail(request, event_id):
 
     return render_to_response('events/event_detail.html', ctx, RequestContext(request))
 
+def user_portfolio(request, user_id):
+    ctx = {
+        'user' : User.objects.get(pk=user_id),
+    }
+    return render_to_response('users/user_portfolio.html', ctx, RequestContext(request))
+
+def user_transactions(request, user_id):
+    ctx = {
+        'user' : User.objects.get(pk=user_id),
+    }
+
+    transactions = list()
+    trans = Transaction.objects.get_queryset().filter(user=user_id).order_by('-date')
+    for tran in trans:
+        transactions.append({
+            'date' : pretty_date(tran.date),
+            'type' : TRANSACTION_TYPES[tran.type],
+        })
+    ctx['transactions'] = transactions
+
+    return render_to_response('users/user_transactions.html', ctx, RequestContext(request))
+
+
+def event_facebook_object_detail(request, event_id):
+    try:
+        event = Event.objects.get(id=event_id)
+    except Event.DoesNotExist:
+        raise Http404
+
+    ctx = {
+        'event': event,
+    }
+
+    return render_to_response('fb_objects/events/event_detail.html', ctx, RequestContext(request))
 
 @login_required
 @require_http_methods(["POST"])

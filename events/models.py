@@ -425,7 +425,6 @@ TRANSACTION_TYPES = (
 
 TRANSACTION_TYPES_INV_DICT = {v: k for k, v in TRANSACTION_TYPES_DICT.items()}
 
-
 class Transaction(models.Model):
     objects = TransactionManager()
 
