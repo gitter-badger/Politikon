@@ -60,7 +60,7 @@
                 <div class="userrank{% if user.is_vip %} uservip{% endif %}">
                     <a href="{{ user.get_absolute_url }}">
                         <img src="{{ user.get_avatar_url }}"/>
-                        <div class="wolnereputy"><span class="astable">{{ user.reputation }}</span></div>
+                        <div class="wolnereputy"><span class="astable">{{ user.reputation|floatformat:"1" }}</span></div>
                         <div class="username">{{ user.username|truncatechars:12 }}</div>
                     </a>
                 </div>

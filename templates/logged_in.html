@@ -1,49 +1,49 @@
 {% load display %}
 
-		<div class="graj avatar prawa">
-			<img src="{{ user.get_avatar_url }}" />
-			<nav class="avatarmenu">
-			<ul>
-				<div class="arrowup"></div>
-				<a href="{% url 'accounts:user_profile' %}"><li>{{ user.full_name }}</li></a>
-                <a href="{% url 'accounts:user_settings' %}"><li>Ustawienia</li></a>
-                <a href="{% url 'accounts:logout' %}"><li>Wyloguj</li></a>
-			</ul>
-		</nav>
-		</div>
+<div class="graj avatar prawa">
+    <img src="{{ user.get_avatar_url }}" />
+    <nav class="avatarmenu">
+        <ul>
+            <div class="arrowup"></div>
+            <a href="{% url 'accounts:user_profile' %}"><li>{{ user.full_name }}</li></a>
+            <a href="{% url 'accounts:user_settings' %}"><li>Ustawienia</li></a>
+            <a href="{% url 'accounts:logout' %}"><li>Wyloguj</li></a>
+        </ul>
+    </nav>
+</div>
 
-		<div class="userdata prawa">
-            {% comment %}
-                <!--klasa .notification dodawana przy powiadomieniach (wtedy,gdy klasa .wallet zawiera span)-->
-            {% endcomment %}
-			<div class="lewa wallet{% if user.get_newest_results.count %} notification{% endif %}">
-				{% if user.get_newest_results.count %}
-                    <span id="wallet_notification_count">{{ user.get_newest_results.count }}</span>
-                    <div class="arrowup"></div>
-                {% endif %}
-			</div>
+<div class="userdata prawa">
+    {% comment %}
+    <!--klasa .notification dodawana przy powiadomieniach (wtedy,gdy klasa .wallet zawiera span)-->
+    {% endcomment %}
+    <div class="lewa wallet{% if user.get_newest_results.count %} notification{% endif %}">
+        {% if user.get_newest_results.count %}
+        <span id="wallet_notification_count">{{ user.get_newest_results.count }}</span>
+        <div class="arrowup"></div>
+        {% endif %}
+    </div>
 
-			<a href="#">
-			<div class="lewa stats">
-				<p>wartość portfela</p>
-				<p class="walletvalue">{{ user.portfolio_value }}</p>
-			</div>
-			</a>
+    <a href="#">
+        <div class="lewa stats">
+            <p>wartość portfela</p>
+            <p class="walletvalue">{{ user.portfolio_value }}</p>
+        </div>
+    </a>
 
-			<a href="#">
-			<div class="lewa stats">
-				<p>wolne reputy</p>
-				<p class="freevalue">{{ user.total_cash_formatted }}</p>
-			</div>
-			</a>
+    <a href="#">
+        <div class="lewa stats">
+            <p>wolne reputy</p>
+            <p class="freevalue">{{ user.total_cash_formatted }}</p>
+        </div>
+    </a>
 
-			<a href="#">
-			<div class="lewa stats">
-				<p>reputacja</p>
-				<p class="reputationvalue">{{ user.reputation|floatformat:1 }}</p>
-			</div>
-			</a>
-		</div>
+    <a href="#">
+        <div class="lewa stats">
+            <p>reputacja</p>
+            <p class="reputationvalue">{{ user.reputation|floatformat:1 }}</p>
+        </div>
+    </a>
+</div>
 
 <section id="wallet-not" class="centrum">
     <div class="container">
@@ -54,11 +54,11 @@
             </div>
             <div id="jp-container" class="jp-container">
                 {% for bet in user.get_newest_results %}
-                    <a class="a-betresult" data-bet_id="{{ bet.id }}" href="{{ bet.event.get_relative_url }}"><div class="betresult new">
+                <a class="a-betresult" data-bet_id="{{ bet.id }}" href="{{ bet.event.get_relative_url }}"><div class="betresult new">
                         {% if bet.event.small_image %}
-                            <img src="{{ bet.event.small_image.url }}" style="width: 128px; height: 100px;"/>
+                        <img src="{{ bet.event.small_image.url }}" style="width: 128px; height: 100px;"/>
                         {% else %}
-                            <img src="{{ STATIC_URL }}img/bet-plain.jpg"/>
+                        <img src="{{ STATIC_URL }}img/bet-plain.jpg"/>
                         {% endif %}
                         {% render_bet_status bet %}
                         <div class="status-change">
@@ -66,7 +66,7 @@
                             <div class="{% if bet.is_won %}changeYES{% else %}changeNO{% endif %}">{{ bet.get_wallet_change }}</div>
                             <p><span class="invested">{{ bet.get_invested }}</span> <span class="won">{{ bet.get_won }}</span></p>
                         </div>
-                    </div></a>
+                </div></a>
                 {% endfor %}
             </div>
             <a href="{% url 'accounts:user_profile' %}#powiadomieniaowynikach" id="go-to-all-results"><div class="viewall">Wyświetl wszystkie wyniki</div></a>
